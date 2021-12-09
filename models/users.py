@@ -24,7 +24,7 @@ class Users(UserMixin, db.Model):
     def image_filename(self):
         return f"user_images/{self.id}.png"
 
-    # No init method needed, because we have schema.
+    # No init method needed, because we have a schema.
 
     def set_password(self, password):
         self.password = generate_password_hash(password, method='sha256')
