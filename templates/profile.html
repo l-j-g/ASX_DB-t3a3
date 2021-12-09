@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+    <div>
+        <form action="/users/profile/" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" name="username" value = {{ current_user.username }}>
+            <button>Update</button>
+        </form>
+        <p>User ID: {{ current_user.id }}</p>
+    </div>
+
+    <form action = "/users/profile/logout", method="GET">
+        <br/>
+        <button>Log Out</button>
+    </form>
+
+    <form action = "/users/profile/delete", method="POST">
+        <br/>
+        <button>DELETE USER</button>
+    </form>
+{% endblock %}
