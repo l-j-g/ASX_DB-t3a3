@@ -59,15 +59,20 @@ def reset_db():
     db.drop_all()
     db.engine.execute("DROP TABLE IF EXISTS alembic_version;")
     db.create_all()
-    from models.users import Users
-    from faker import Faker
-    faker = Faker()
 
-    for i in range(20):
-        user = Users(faker.catch_phrase())
-        db.session.add(user)
-    db.session.commit()
+    from models.tickers import Tickers
     print("Tables reset & seeded!")
+    with open('./asxApp/data/ASX_Listed_Companies_04-11-2021_04-29-57_AEDT.csv') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',')
+        header = next(reader)
+        for i in range(3):
+            csv_line = next(reader)
+            ticker_id = csv_line[0]
+            ticker = Tickers(csv_line[0],csv_line[1],csv_line[3],csv_line[4])
+            db.session.add(ticker)
+    # cash_flow = Cashflow.cashflow()
+    db.session.commit()
+    print("Tables seeded!")
 
 @db_commands.cli.command("export")
 def export_db():

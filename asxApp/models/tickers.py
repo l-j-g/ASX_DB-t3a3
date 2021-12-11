@@ -1,4 +1,5 @@
 from sqlalchemy.sql.schema import ForeignKey
+from sqlalchemy.dialects.postgresql import MONEY
 from main import db
 from models.users import Users
 

@@ -2,8 +2,10 @@ from flask import Blueprint, jsonify, request, render_template, redirect, url_fo
 from main import db
 from models.tickers import Tickers
 from schemas.ticker_schema import tickers_schema, ticker_schema
+import locale
 
 tickers = Blueprint('tickers', __name__)
+locale.setlocale( locale.LC_ALL, '')
 
 
 @tickers.route("/tickers/", methods=["GET"])
@@ -12,6 +14,8 @@ def get_tickers():
         "page_title": "Ticker Index",
         "tickers": tickers_schema.dump(Tickers.query.all())
     }
+    for ticker in data['tickers']:
+       ticker['marketcap'] = locale.currency(ticker['marketcap'], grouping=True)
     return render_template("ticker_index.html", page_data=data)
 
 
