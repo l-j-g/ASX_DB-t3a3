@@ -23,7 +23,6 @@ def create_app():
     migrate.init_app(app, db)
 
     from commands import db_commands
-
     app.register_blueprint(db_commands)
 
     # Register our routes
