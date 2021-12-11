@@ -8,6 +8,8 @@ class TickerSchema(ma.SQLAlchemyAutoSchema):
     # dump only, imformed only by the database. 
     ticker_id = auto_field(dump_only=True)
     company_name = auto_field(dump_only=True)
+    sector = auto_field(dump_only=True)
+    marketcap = auto_field(dump_only=True)
 
     followers = ma.Nested(
         "UserSchema",
