@@ -1,3 +1,4 @@
+from marshmallow import fields
 from main import ma
 from models.tickers import Tickers
 from marshmallow_sqlalchemy import auto_field
@@ -17,7 +18,9 @@ class TickerSchema(ma.SQLAlchemyAutoSchema):
     )
     # Metadata for the class 
     class Meta:
+        # This schema applies to the 'Tickers' model
         model = Tickers
+        # De-serialize the data to an instance of the model
         load_instance = True
 
 ticker_schema = TickerSchema()

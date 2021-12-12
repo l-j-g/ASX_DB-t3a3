@@ -5,11 +5,18 @@
     <table class="table table-striped table-bordered">
         <thead>
             <tr>    
-                <th>Ticker </th>
-                <th>Company Name</th>
-                <th>Category</th>
-                <th>Market Capitalization</th>
+                {% for group, title in headers.items() %}
+                {% if group == page_data.group and page_data.order == "desc" %}
+                <th><a href="/tickers/orderway=asc&groupby={{ group }}"> {{ title }} [ ⬇ ] </a></th>
+                {% elif group == page_data.group and page_data.order == "asc" %}
+                <th><a href="/tickers/orderway=desc&groupby={{ group }}"> {{ title }} [ ⬆ ] </a></th>
+                {% else %}
+                <th><a href="/tickers/orderway=desc&groupby={{ group }}"> {{ title }} </a></th>
+                {% endif %}
+                {% endfor %}
+
             </tr>
+
         </thead>
         {% for ticker in page_data.tickers %}
         <tbody>
@@ -26,6 +33,11 @@
                 <td>
                     {{ ticker.marketcap }}
                 </td>
+                {% if current_user.is_authenticated %}
+                <td>
+                    <a href="/tickers/{{ ticker.ticker_id }}/add"> Add to Portfolio </a>
+                </td>
+                {% endif %}
             </tr>
         </tbody>
         {% endfor %}

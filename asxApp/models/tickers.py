@@ -1,5 +1,5 @@
 from sqlalchemy.sql.schema import ForeignKey
-from sqlalchemy.dialects.postgresql import MONEY
+# from sqlalchemy.dialects import postgresql
 from main import db
 from models.users import Users
 
@@ -18,6 +18,7 @@ class Tickers(db.Model):
     company_name = db.Column(db.String(45), unique=True, nullable=False)
     sector = db.Column(db.String(200))
     marketcap = db.Column(db.Integer)
+#    marketcap = db.Column(postgresql.MONEY)
 
     # one-to-one relationship for tickers to their respective cash flow statement
 #    cashflow = db.relationship("cashflow", back_populates="tickers", uselist=False)
