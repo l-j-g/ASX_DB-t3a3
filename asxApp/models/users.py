@@ -20,6 +20,11 @@ class Users(UserMixin, db.Model):
         nullable=False
     )
 
+    portfolio = db.relationship(
+        'Ticker',
+        
+    )
+
     @property
     def image_filename(self):
         return f"user_images/{self.id}.png"

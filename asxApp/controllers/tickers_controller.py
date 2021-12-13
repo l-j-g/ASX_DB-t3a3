@@ -45,3 +45,8 @@ def sort_tickers(order, group):
     for ticker in data['tickers']:
        ticker['marketcap'] = locale.currency(ticker['marketcap'], grouping=True)
     return render_template("ticker_index.html", page_data=data, headers=headers)
+
+@tickers.route("/tickers/<string:ticker_id>/add", methods=["GET"])
+def add_ticker(ticker_id):
+    ticker = Tickers.query.get_or_404(ticker_id)
+    
