@@ -4,6 +4,7 @@ from models.tickers import Tickers
 from schemas.ticker_schema import tickers_schema, ticker_schema
 import locale
 from sqlalchemy import desc 
+from flask_login import login_required, current_user
 
 tickers = Blueprint('tickers', __name__)
 locale.setlocale( locale.LC_ALL, '')
@@ -46,7 +47,10 @@ def sort_tickers(order, group):
        ticker['marketcap'] = locale.currency(ticker['marketcap'], grouping=True)
     return render_template("ticker_index.html", page_data=data, headers=headers)
 
-@tickers.route("/tickers/<string:ticker_id>/add", methods=["GET"])
+@tickers.route("/tickers/<string:ticker_id>/add", methods=["POST"])
 def add_ticker(ticker_id):
     ticker = Tickers.query.get_or_404(ticker_id)
+    ticker.followers.append(current_user)
+    db.session.commit()
+    return redirect(request.referrer)
     

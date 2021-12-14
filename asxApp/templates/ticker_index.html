@@ -34,7 +34,7 @@
                 </td>
                 {% if current_user.is_authenticated %}
                 <td>
-                    <a href="/tickers/{{ ticker.ticker_id }}/add"> Add to Portfolio </a>
+                    <form action="/tickers/{{ ticker.ticker_id }}/add" method="POST"><button>Add to Portfolio </button>
                 </td>
                 {% endif %}
             </tr>

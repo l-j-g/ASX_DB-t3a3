@@ -20,8 +20,8 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
     )
 
     tickers_followed = ma.Nested(
-        "ticker_schema",
-        only=("ticker", "company_name")
+        "TickerSchema",
+        only=("ticker_id", "company_name")
     )
 
     def load_password(self, password):

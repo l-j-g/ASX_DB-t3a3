@@ -9,7 +9,6 @@ portfolios = db.Table(
     db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
     db.Column('ticker_id', db.String(45), db.ForeignKey('tickers.ticker_id'), primary_key=True)
 )
-# Create a linking table for a many-to-many relationship
 
 class Tickers(db.Model):
 
@@ -23,10 +22,11 @@ class Tickers(db.Model):
     # one-to-one relationship for tickers to their respective cash flow statement
 #    cashflow = db.relationship("cashflow", back_populates="tickers", uselist=False)
     
-    investors = db.relationship(
+    followers = db.relationship(
         Users,
         secondary=portfolios,
-        backref=db.backref('followers')
+        backref=('followed_companies'),
+        lazy='joined'
     )
 
 
