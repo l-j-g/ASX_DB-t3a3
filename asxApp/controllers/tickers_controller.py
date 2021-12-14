@@ -47,10 +47,18 @@ def sort_tickers(order, group):
        ticker['marketcap'] = locale.currency(ticker['marketcap'], grouping=True)
     return render_template("ticker_index.html", page_data=data, headers=headers)
 
-@tickers.route("/tickers/<string:ticker_id>/add", methods=["POST"])
+@tickers.route("/tickers/<string:ticker_id>/add", methods=["GET"])
+@login_required
 def add_ticker(ticker_id):
     ticker = Tickers.query.get_or_404(ticker_id)
     ticker.followers.append(current_user)
     db.session.commit()
     return redirect(request.referrer)
     
+@tickers.route("/tickers/<string:ticker_id>/remove", methods=["GET"])
+@login_required
+def remove_ticker(ticker_id):
+    ticker = Tickers.query.get_or_404(ticker_id)
+    ticker.followers.remove(current_user)
+    db.session.commit()
+    return redirect(request.referrer)

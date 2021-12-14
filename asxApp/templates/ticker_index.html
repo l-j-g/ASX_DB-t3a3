@@ -17,8 +17,8 @@
             </tr>
 
         </thead>
-        {% for ticker in page_data.tickers %}
         <tbody>
+        {% for ticker in page_data.tickers %}
             <tr>
                 <td>
                     <a href="/tickers/{{ ticker.ticker_id }}/">{{ ticker.ticker_id }}</a>
@@ -34,11 +34,10 @@
                 </td>
                 {% if current_user.is_authenticated %}
                 <td>
-                    <form action="/tickers/{{ ticker.ticker_id }}/add" method="POST"><button>Add to Portfolio </button>
+                    <a href="/tickers/{{ ticker.ticker_id }}/add">Add to Portfolio </a>
                 </td>
                 {% endif %}
             </tr>
-        </tbody>
         {% endfor %}
     </table>
     <hr/>
