@@ -2,7 +2,7 @@ from marshmallow import fields
 from main import ma
 from models.tickers import Tickers
 from marshmallow_sqlalchemy import auto_field
-
+from schemas.user_schema import UserSchema
 
 class TickerSchema(ma.SQLAlchemyAutoSchema):
 
@@ -12,9 +12,13 @@ class TickerSchema(ma.SQLAlchemyAutoSchema):
     sector = auto_field(dump_only=True)
     marketcap = auto_field(dump_only=True)
 
+   # The schema of users that are following the ticker is nested inside the ticker schema 
     followers = ma.Nested(
         "UserSchema",
-        only = ("id","username")
+        # The use of 'only' prevents an infinite loop of nested schemas
+        only = ("id","username"),
+        many = True
+
     )
     # Metadata for the class 
     class Meta:
@@ -25,3 +29,5 @@ class TickerSchema(ma.SQLAlchemyAutoSchema):
 
 ticker_schema = TickerSchema()
 tickers_schema = TickerSchema(many=True)
+# Partial schema, if we want to update some fields not all.
+ticker_update_schema = TickerSchema(partial=True)

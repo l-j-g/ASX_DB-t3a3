@@ -25,11 +25,11 @@
                 <th>Company Name</th>
                 <th>Status</th>
             </tr>
-        {% for ticker in current_user.followed_companies %}
         <tbody>
+        {% for ticker in current_user.followed_companies %}
             <tr>
                 <td>
-                    <a href="/tickers/{{ ticker.ticker_id }}/">{{ ticker.ticker_id }}</a>
+                    <a href="/tickers/{{ ticker.ticker_id }}/info">{{ ticker.ticker_id }}</a>
                 </td>
                 <td>
                     {{ ticker.company_name }}
@@ -38,8 +38,8 @@
                     <a href="/tickers/{{ ticker.ticker_id }}/remove">Remove</a>
                 </td>
             </tr>
-        </tbody>
         {% endfor %}
+        </tbody>
     </table>
     <hr/>
 {% endblock %}

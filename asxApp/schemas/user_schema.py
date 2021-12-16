@@ -21,7 +21,8 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
 
     tickers_followed = ma.Nested(
         "TickerSchema",
-        only=("ticker_id", "company_name")
+        only=("ticker_id", "company_name"),
+        many = True
     )
 
     def load_password(self, password):
@@ -33,9 +34,10 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
 
     # Metadata for the class
     class Meta:
+        # This schema applies to the 'Users' model
         model = Users
+        # De-serialize the data to an instance of the model
         load_instance = True
-
 
 # Single user schema
 user_schema = UserSchema()

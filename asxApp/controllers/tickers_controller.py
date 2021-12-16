@@ -1,7 +1,10 @@
 from flask import Blueprint, jsonify, request, render_template, redirect, url_for
+from schemas.user_schema import UserSchema
 from main import db
 from models.tickers import Tickers
+from models.users import Users
 from schemas.ticker_schema import tickers_schema, ticker_schema
+from schemas.user_schema import users_schema, user_schema
 import locale
 from sqlalchemy import desc 
 from flask_login import login_required, current_user
@@ -27,6 +30,7 @@ def get_tickers():
     return render_template("ticker_index.html", page_data=data, headers=headers)
 
 
+# "user": UserSchema.dump(current_user)
 
 @tickers.route("/tickers/orderway=<string:order>&groupby=<string:group>", methods=["GET"])
 def sort_tickers(order, group):
@@ -46,6 +50,19 @@ def sort_tickers(order, group):
     for ticker in data['tickers']:
        ticker['marketcap'] = locale.currency(ticker['marketcap'], grouping=True)
     return render_template("ticker_index.html", page_data=data, headers=headers)
+
+@tickers.route("/tickers/<string:ticker_id>/info", methods=["GET"])
+def get_info(ticker_id):
+    ticker = Tickers.query.get_or_404(ticker_id)
+    data = {
+    "page_title": "Ticker Info",
+    "ticker": ticker_schema.dump(ticker),
+    }
+    
+
+
+    return render_template("ticker_info.html", page_data=data)
+
 
 @tickers.route("/tickers/<string:ticker_id>/add", methods=["GET"])
 @login_required
