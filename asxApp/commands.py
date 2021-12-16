@@ -2,6 +2,8 @@
 from main import db
 import csv
 from flask import Blueprint
+import os
+from dotenv import load_dotenv
 
 db_commands = Blueprint("db-custom", __name__)
 
@@ -43,16 +45,17 @@ def seed_db():
     # cash_flow = Cashflow.cashflow()
     db.session.commit()
     print("Tables seeded!")
-'''
-            with open(f'./asxApp/data/{ticker_id}.AX/{ticker_id}.AX_cash_flow.csv') as cashflow_file:
-                csv_line = csv.reader(cashflow_file, delimiter=',')
-                dates = next(csv_line)
-                title = []
-                for line in csv_line:
-                    title.append(csv_line.split()[0])
-                print(title)
-'''               
-
+    '''
+    with open(f'./asxApp/data/{ticker_id}.AX/{ticker_id}.AX_info.csv') as info:
+        reader = csv.reader(info, delimiter=',')
+        header = next(reader)
+        titles = []
+        values = []
+        for line in reader:
+            titles.append(csv_line.split()[0])
+            values.append(csv_line.split()[1])
+        print(titles)
+    '''
 @db_commands.cli.command("reset")
 def reset_db():
     """ Drops, creates and seeds tables in one command."""
@@ -77,5 +80,9 @@ def reset_db():
 @db_commands.cli.command("export")
 def export_db():
     "Exports all data from database into a text document"
-    # TODO : Write SQL command to dump all data to text
-    pass
+    load_dotenv()
+    user = os.environ.get('DB_USER') 
+    password = os.environ.get('DB_PASS') 
+    database = os.environ.get('DB_NAME') 
+    domain = os.environ.get('DB_DOMAIN')
+    os.system(f"pg_dump --dbname=postgresql://{user}:{password}@{domain}/{database} -f dump")  
