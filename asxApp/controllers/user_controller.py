@@ -6,7 +6,6 @@ from flask_login import login_user, logout_user, login_required, current_user
 from marshmallow import ValidationError
 import boto3
 from models.tickers import Tickers
-from pprint import pprint
 
 @lm.user_loader
 def load_user(username):
@@ -119,16 +118,8 @@ def user_detail():
 
 @users.route("/users/<int:id>/", methods=["GET"])
 def get_user(id):
-    user = Users.query.get(id)
-    
-
-#    print(Tickers.query.filter_by(ticker_id = ticker_id).all()[0].followers.count)
-#    print(user_schema.dump(Users.query.get_or_404(id)))
-#    print(Tickers.query.filter_by(ticker_id = "14D").all()[0].followers)
-    result = UserSchema().dump(user)
-    pprint(result)
-#    print(db.session.query(Users).with_parent(ticker))
-
+    # get this users data from the database
+    user = Users.query.get_or_404(id)
     # client object communicates with our bucket
     s3_client = boto3.client('s3')    
     # get s3 bucket name from config
@@ -159,10 +150,3 @@ def delete_user(id):
     db.session.delete(user)
     db.session.commit()
     return redirect(url_for("users.get_users"))
-
-'''
-@users.route('/favicon.ico')
-# Display tab icon
-def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'static'),'favicon.ico', mimetype='image/vnd.microsoft.icon')
-'''
