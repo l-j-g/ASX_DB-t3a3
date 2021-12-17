@@ -29,7 +29,6 @@ def get_tickers():
        ticker['marketcap'] = locale.currency(ticker['marketcap'], grouping=True)
     return render_template("ticker_index.html", page_data=data, headers=headers)
 
-
 # "user": UserSchema.dump(current_user)
 
 @tickers.route("/tickers/orderway=<string:order>&groupby=<string:group>", methods=["GET"])
@@ -37,7 +36,6 @@ def sort_tickers(order, group):
     data = {
         "page_title": "Ticker Index",
         "tickers": tickers_schema.dump(Tickers.query.order_by(getattr(getattr(Tickers,group),order)()).all()),
-        #(getattr(Tickers,group)).all())
         "group": group,
         "order": order
     }
@@ -54,21 +52,11 @@ def sort_tickers(order, group):
 @tickers.route("/tickers/<string:ticker_id>/info", methods=["GET"])
 def get_info(ticker_id):
     ticker = Tickers.query.get_or_404(ticker_id)
-#    followers = db.session.query(func.count(Tickers.followers).filter(Tickers.ticker_id == ticker_id))
-#    print(followers)
-#    followers = ticker_schema.dump(followers)
-#    print(followers)
-#    print(type(Tickers.followers))
     data = {
     "page_title": "Ticker Info",
     "ticker": ticker_schema.dump(ticker),
     "followers": db.session.query(Users).with_parent(ticker).count()
     }
-#    print(current_user.followed_companies)
-#    print(tickers_schema.dump(Users.query.get_or_404(current_user.id).followed_companies))
-
-#    print(user_schema.dump(Users.query.get_or_404(current_user.id)))
-   # print(data['followers'])
 
 
     return render_template("ticker_info.html", page_data=data)

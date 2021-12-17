@@ -1,10 +1,12 @@
 from flask import Blueprint, jsonify, request, render_template, redirect, url_for, abort, flash, current_app
 from main import db, lm
 from models.users import Users
-from schemas.user_schema import users_schema, user_schema, user_update_schema
+from schemas.user_schema import users_schema, user_schema, user_update_schema, UserSchema
 from flask_login import login_user, logout_user, login_required, current_user
 from marshmallow import ValidationError
 import boto3
+from models.tickers import Tickers
+from pprint import pprint
 
 @lm.user_loader
 def load_user(username):
@@ -82,7 +84,6 @@ def user_detail():
         s3_client = boto3.client('s3')    
         # get s3 bucket name from config
         bucket_name = current_app.config["AWS_S3_BUCKET"]
-        print(current_app.config["AWS_ACCESS_KEY_ID"])
         # pre-signed prevents public from being able to access files 
         image_url = s3_client.generate_presigned_url(
             'get_object',
@@ -93,7 +94,7 @@ def user_detail():
             ExpiresIn=160
             ) 
         data = {
-            "page_title": "Account Details & Settings",
+            "page_title": "Account Details",
             "user": user_schema.dump(user),
             "image": image_url
         }
@@ -118,13 +119,20 @@ def user_detail():
 
 @users.route("/users/<int:id>/", methods=["GET"])
 def get_user(id):
-    user = Users.query.get_or_404(id)
+    user = Users.query.get(id)
+    
+
+#    print(Tickers.query.filter_by(ticker_id = ticker_id).all()[0].followers.count)
+#    print(user_schema.dump(Users.query.get_or_404(id)))
+#    print(Tickers.query.filter_by(ticker_id = "14D").all()[0].followers)
+    result = UserSchema().dump(user)
+    pprint(result)
+#    print(db.session.query(Users).with_parent(ticker))
 
     # client object communicates with our bucket
     s3_client = boto3.client('s3')    
     # get s3 bucket name from config
     bucket_name = current_app.config["AWS_S3_BUCKET"]
-    print(current_app.config["AWS_ACCESS_KEY_ID"])
     # pre-signed prevents public from being able to access files 
     image_url = s3_client.generate_presigned_url(
         'get_object',
@@ -134,7 +142,6 @@ def get_user(id):
         },
         ExpiresIn=160
     )
-
     data = {
         "page_title": "User Detail",
         "user": user_schema.dump(user),
@@ -142,10 +149,12 @@ def get_user(id):
     }
     return render_template("user_detail.html", page_data=data)
 
-
 @users.route("/users/<int:id>/delete", methods=["POST"])
 @login_required
 def delete_user(id):
+    if not current_user.id == id:
+        flash("You can't do that, this isn't your profile.")
+        return redirect(request.referrer)
     user = Users.query.get_or_404(id)
     db.session.delete(user)
     db.session.commit()

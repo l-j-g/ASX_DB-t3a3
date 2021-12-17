@@ -20,6 +20,8 @@ class Users(UserMixin, db.Model):
         nullable=False
     )
 
+#    tickers_followed = db.relationship("Tickers", backref="parents")
+
     @property
     def image_filename(self):
         return f"user_images/{self.id}.png"

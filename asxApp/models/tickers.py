@@ -24,9 +24,8 @@ class Tickers(db.Model):
     followers = db.relationship(
         Users,
         secondary=portfolios,
-        backref=('followed_companies')
-#        lazy='joined'
-        
+        backref=('followed_companies'),
+        lazy='joined'
     )
 
 

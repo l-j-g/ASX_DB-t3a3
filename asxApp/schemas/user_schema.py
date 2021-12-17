@@ -19,13 +19,12 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
         load_only=True,
         deserialize="load_password"
     )
-
-    tickers_followed = ma.Nested(
-        TickerSchema(many=True),
+    followed_companies = ma.Nested(
+        "TickerSchema", 
         only=("ticker_id", "company_name"),
-        many = True
-    )
-
+        many=True
+        )
+    
     def load_password(self, password):
         if len(password) >= 6:
             return generate_password_hash(password, method='sha256')
