@@ -2,8 +2,6 @@ from marshmallow import fields
 from main import ma
 from models.tickers import Tickers
 from marshmallow_sqlalchemy import auto_field
-from schemas.user_schema import UserSchema
-
 class TickerSchema(ma.SQLAlchemyAutoSchema):
 
     # dump only, imformed only by the database. 
