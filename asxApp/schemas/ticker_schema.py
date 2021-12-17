@@ -18,7 +18,6 @@ class TickerSchema(ma.SQLAlchemyAutoSchema):
         # The use of 'only' prevents an infinite loop of nested schemas
         only = ("id","username"),
         many = True
-
     )
     # Metadata for the class 
     class Meta:

@@ -6,7 +6,7 @@ from models.users import Users
 from schemas.ticker_schema import tickers_schema, ticker_schema
 from schemas.user_schema import users_schema, user_schema
 import locale
-from sqlalchemy import desc 
+from sqlalchemy import desc, func
 from flask_login import login_required, current_user
 
 tickers = Blueprint('tickers', __name__)
@@ -54,11 +54,21 @@ def sort_tickers(order, group):
 @tickers.route("/tickers/<string:ticker_id>/info", methods=["GET"])
 def get_info(ticker_id):
     ticker = Tickers.query.get_or_404(ticker_id)
+#    followers = db.session.query(func.count(Tickers.followers).filter(Tickers.ticker_id == ticker_id))
+#    print(followers)
+#    followers = ticker_schema.dump(followers)
+#    print(followers)
+#    print(type(Tickers.followers))
     data = {
     "page_title": "Ticker Info",
     "ticker": ticker_schema.dump(ticker),
+    "followers": db.session.query(
+        Tickers.followers).filter(
+            Tickers.ticker_id == ticker_id
+            ).count()
     }
     
+#    print(data['ticker'])
 
 
     return render_template("ticker_info.html", page_data=data)

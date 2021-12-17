@@ -26,6 +26,7 @@ class Tickers(db.Model):
         secondary=portfolios,
         backref=('followed_companies')
 #        lazy='joined'
+        
     )
 
 

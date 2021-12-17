@@ -110,3 +110,10 @@ SQL constraints: string, primary_key
 Professional obligations
 Ethical obligations
 Example of legal obligations
+
+
+## TODO
+
+Add more tickers
+Add pagination
+Add info 1-1 relation
