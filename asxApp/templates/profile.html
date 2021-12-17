@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
+<h2> {{ page_data.title }} {{ current_user.username }} </h2>
+<p>
+    This is your personal profile where you can change your username, update your profile picture, delete your account or view companies that are in you are following.
+</p>
+<hr/>
     <div>
         <form action="/users/profile/" method="POST">
             <label for="username">Username:</label>
@@ -15,8 +20,19 @@
         <button>DELETE USER</button>
     </form>
     </div>
+
+    <img src= "{{ page_data.image }}" style="width: 250px">
+    <img src= "../../static/user_images/{{ page_data.user.id }}.png" style="width: 250px">
+    <br/><br/>
+
+    <h3>Update Image: </h3>
+    <form action="/users/{{ page_data.user.id }}/image/" method="POST" enctype = "multipart/form-data">
+        <input type="file" name="image">
+        <input type="submit">
+    </form>
+
     <br/>
-    <h3> Users Portfolio: </h3>
+    <h3> Your Portfolio: </h3>
     <hr/>
     <table class="table table-striped table-bordered">
         <thead>

@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
-    <br/>
+    <h2> {{ page_data.page_title }}: </h2>
+    <p>  
+        This is a list of all users that have registered with ASX_DB.  <br>
+        If you click on a username you will be able to view what companies that user is following.
+    </p>
+    <hr/>
     <h2>List of Users:</h2>
     {% for user in page_data.users %}
         <li><a href="/users/{{ user.id }}/">{{ user.username }}</a></li>
