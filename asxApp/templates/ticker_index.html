@@ -37,6 +37,7 @@
 
                 <td>
                     <a href="/tickers/{{ ticker.ticker_id }}/add">Add to Portfolio</a>
+                    <form action="/tickers/{{ ticker.ticker_id }}/add" method="POST">Add to Portfolio</form>
                 </td>
                 {% else %}
                 <td>
