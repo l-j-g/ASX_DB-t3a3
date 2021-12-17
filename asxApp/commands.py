@@ -27,7 +27,7 @@ def drop_db():
 def seed_db():
     """ Seeds the database with user data"""
     from models.users import Users
-    from models.tickers import Tickers
+    from models.tickers import Tickers, Info
     from faker import Faker
     faker = Faker()
 
@@ -42,20 +42,20 @@ def seed_db():
             ticker_id = csv_line[0]
             ticker = Tickers(csv_line[0],csv_line[1],csv_line[3],csv_line[4])
             db.session.add(ticker)
-    # cash_flow = Cashflow.cashflow()
+
+            with open(f'./asxApp/data/{ticker_id}.AX/{ticker_id}.AX_info.csv') as info:
+                reader = csv.reader(info, delimiter=',')
+                header = next(reader)
+                titles = []
+                values = []
+                for line in reader:
+                    titles.append(line[0])
+                    values.append(line[1])
+                info = Info(titles,values)
+    
     db.session.commit()
     print("Tables seeded!")
-    '''
-    with open(f'./asxApp/data/{ticker_id}.AX/{ticker_id}.AX_info.csv') as info:
-        reader = csv.reader(info, delimiter=',')
-        header = next(reader)
-        titles = []
-        values = []
-        for line in reader:
-            titles.append(csv_line.split()[0])
-            values.append(csv_line.split()[1])
-        print(titles)
-    '''
+
 @db_commands.cli.command("reset")
 def reset_db():
     """ Drops, creates and seeds tables in one command."""
