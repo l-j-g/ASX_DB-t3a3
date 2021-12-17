@@ -3,6 +3,7 @@ from models.users import Users
 from marshmallow_sqlalchemy import auto_field
 from marshmallow import fields, exceptions, validate
 from werkzeug.security import generate_password_hash
+from schemas.ticker_schema import TickerSchema
 
 
 class UserSchema(ma.SQLAlchemyAutoSchema):
@@ -20,7 +21,7 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
     )
 
     tickers_followed = ma.Nested(
-        "TickerSchema",
+        TickerSchema(many=True),
         only=("ticker_id", "company_name"),
         many = True
     )
