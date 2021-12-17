@@ -10,7 +10,7 @@ from sqlalchemy import desc, func
 from flask_login import login_required, current_user
 
 tickers = Blueprint('tickers', __name__)
-locale.setlocale( locale.LC_ALL, '')
+locale.setlocale( locale.LC_ALL, 'en_US.UTF-8')
 
 
 @tickers.route("/tickers/", methods=["GET"])
@@ -62,13 +62,13 @@ def get_info(ticker_id):
     data = {
     "page_title": "Ticker Info",
     "ticker": ticker_schema.dump(ticker),
-    "followers": db.session.query(
-        Tickers.followers).filter(
-            Tickers.ticker_id == ticker_id
-            ).count()
+    "followers": db.session.query(Users).with_parent(ticker).count()
     }
-    
-#    print(data['ticker'])
+#    print(current_user.followed_companies)
+#    print(tickers_schema.dump(Users.query.get_or_404(current_user.id).followed_companies))
+
+#    print(user_schema.dump(Users.query.get_or_404(current_user.id)))
+   # print(data['followers'])
 
 
     return render_template("ticker_info.html", page_data=data)
