@@ -17,7 +17,7 @@
                 <th>Company Name</th>
             </tr>
         <tbody>
-        {% for ticker in current_user.followed_companies %}
+        {% for ticker in page_data['user']['followed_companies'] %}
             <tr>
                 <td>
                     <a href="/tickers/{{ ticker.ticker_id }}/info">{{ ticker.ticker_id }}</a>
