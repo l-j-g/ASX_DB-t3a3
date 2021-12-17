@@ -76,7 +76,27 @@ def log_out():
 def user_detail():
 
     if request.method == "GET":
-        data = {"page_title": "Account Details"}
+      
+        # client object communicates with our bucket
+        user = Users.query.get_or_404(current_user.id)
+        s3_client = boto3.client('s3')    
+        # get s3 bucket name from config
+        bucket_name = current_app.config["AWS_S3_BUCKET"]
+        print(current_app.config["AWS_ACCESS_KEY_ID"])
+        # pre-signed prevents public from being able to access files 
+        image_url = s3_client.generate_presigned_url(
+            'get_object',
+            Params={
+                'Bucket': bucket_name,
+                'Key': user.image_filename
+                },
+            ExpiresIn=160
+            ) 
+        data = {
+            "page_title": "Account Details & Settings",
+            "user": user_schema.dump(user),
+            "image": image_url
+        }
         return render_template("profile.html", page_data=data)
 
     if request.method == "POST":
