@@ -33,15 +33,16 @@
                     {{ ticker.marketcap }}
                 </td>
                 {% if current_user.is_authenticated %}
-                {% if ticker.ticker_id not in current_user.followed_companies %}
+                {% if {'id': current_user.id, 'username': current_user.username} not in ticker.followers %}
 
                 <td>
                     <a href="/tickers/{{ ticker.ticker_id }}/add">Add to Portfolio</a>
                 </td>
-                {% endif %}
+                {% else %}
                 <td>
                     <a href="/tickers/{{ ticker.ticker_id }}/remove">Remove</a>
                 </td>
+                {% endif %}
                 {% endif %}
             </tr>
         {% endfor %}
