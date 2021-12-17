@@ -79,7 +79,7 @@ def reset_db():
 
 @db_commands.cli.command("export")
 def export_db():
-    "Exports all data from database into a text document"
+    "Exports all data from the database into a text document"
     load_dotenv()
     user = os.environ.get('DB_USER') 
     password = os.environ.get('DB_PASS') 
