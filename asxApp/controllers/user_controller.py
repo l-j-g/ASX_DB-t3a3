@@ -1,9 +1,12 @@
 from flask import Blueprint, jsonify, request, render_template, redirect, url_for, abort, flash, current_app
 from main import db, lm
 from models.users import Users
-from schemas.user_schema import users_schema, user_schema, user_update_schema, UserSchema
+from models.usage import Usage
+from schemas.user_schema import users_schema, user_schema, user_update_schema
+from schemas.usage_schema import usage_schema
 from flask_login import login_user, logout_user, login_required, current_user
 from marshmallow import ValidationError
+from sqlalchemy import update
 import boto3
 from models.tickers import Tickers
 
@@ -27,6 +30,20 @@ def get_users():
         "page_title": "User Index",
         "users": users_schema.dump(Users.query.all())
     }
+
+
+
+        #user = Users.query.filter_by(id=current_user.id)
+        #updated_fields = user_schema.dump(request.form)
+        ## user_update_schema.validate() - to check for errors, validation checks are 
+        ## only used on load() by default.
+        ## user_update_schema has partial = True set, because we are not updating password.
+        #errors = user_update_schema.validate(updated_fields)
+
+
+        #user.update(updated_fields)
+        #db.session.commit()
+
     return render_template("user_index.html", page_data=data)
 
 
@@ -46,6 +63,11 @@ def register():
         db.session.add(new_user)
         db.session.commit()
         login_user(new_user)
+
+        usage = Usage.query.get(1)
+        usage.no_logins += 1
+        db.session.commit()
+
         return redirect(url_for("users.get_users"))   
         #   except ValidationError as err:
         #    abort(422, {err})
@@ -60,6 +82,11 @@ def log_in():
     user = Users.query.filter_by(username=request.form["username"]).first()
     if user and user.check_password(password=request.form["password"]):
         login_user(user)
+
+        usage = Usage.query.get(1)
+        usage.no_logins += 1
+        db.session.commit()
+
         return redirect(url_for('users.user_detail'))
 
     abort(401, "Login unsuccessful. Incorrect Credentials.")

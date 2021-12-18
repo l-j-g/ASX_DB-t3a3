@@ -26,7 +26,6 @@ def get_tickers():
         "sector": "Category",
         "marketcap": "Market Capitalization"
     }
-    print(data['tickers'])
     for ticker in data['tickers']:
        ticker['marketcap'] = locale.currency(ticker['marketcap'], grouping=True)
     return render_template("ticker_index.html", page_data=data, headers=headers)
@@ -71,8 +70,6 @@ def get_info(ticker_id):
         "zipcode": "Postcode:",
         "country": "Country:",
     } 
-    print(data["ticker"]["info"].values())
-    print(headers.values())
 
 
     return render_template("ticker_info.html", page_data=data, headers=headers)

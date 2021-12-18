@@ -28,6 +28,7 @@ def seed_db():
 	""" Seeds the database with user data"""
 	from models.users import Users
 	from models.tickers import Tickers, Info
+	from models.usage import Usage
 #    from faker import Faker
 #    faker = Faker()
 #
@@ -56,18 +57,26 @@ def seed_db():
 					values.append(line[1])
 				info = Info(values,ticker_id)
 				db.session.add(info)
+	db.session.add(Usage())
 	db.session.commit()
 	print("Tables seeded!")
 
 @db_commands.cli.command("reset")
 def reset_db():
 	""" Drops, creates and seeds tables in one command."""
+
+	# Drop tables
 	db.drop_all()
 	db.engine.execute("DROP TABLE IF EXISTS alembic_version;")
 	db.engine.execute("DROP TABLE IF EXISTS alembic_version CASCADE;")
+
+	# Create
 	db.create_all()
 
+
+	# Seed
 	from models.tickers import Tickers
+	from models.usage import Usage
 	print("Tables reset & seeded!")
 	with open('./asxApp/data/ASX_Listed_Companies_04-11-2021_04-29-57_AEDT.csv') as csvfile:
 		reader = csv.reader(csvfile, delimiter=',')
@@ -77,6 +86,7 @@ def reset_db():
 			ticker_id = csv_line[0]
 			ticker = Tickers(csv_line[0],csv_line[1],csv_line[3],csv_line[4])
 			db.session.add(ticker)
+	db.session.add(Usage())
 	db.session.commit()
 	print("Tables seeded!")
 

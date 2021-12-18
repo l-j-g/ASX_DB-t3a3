@@ -5,14 +5,12 @@ from marshmallow import fields, exceptions, validate, ValidationError
 from werkzeug.security import generate_password_hash
 from schemas.ticker_schema import TickerSchema
 
-import string
-
 
 class UserSchema(ma.SQLAlchemyAutoSchema):
 
     # dump only, imformed only by the database.
     id = auto_field(dump_only=True) # Import appropriate validator and add check.
-    username = auto_field(required=True, validate=validate.Length(min=1))
+    username = auto_field(required=True, validate=validate.Length(min=6, max=200))
     # This type of field will get its value based on a function
     password = fields.Method(
         require=True,
