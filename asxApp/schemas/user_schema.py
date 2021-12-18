@@ -1,16 +1,17 @@
 from main import ma
 from models.users import Users
 from marshmallow_sqlalchemy import auto_field
-from marshmallow import fields, exceptions, validate
+from marshmallow import fields, exceptions, validate, ValidationError
 from werkzeug.security import generate_password_hash
 from schemas.ticker_schema import TickerSchema
+
+import string
 
 
 class UserSchema(ma.SQLAlchemyAutoSchema):
 
     # dump only, imformed only by the database.
-    id = auto_field(dump_only=True)
-    # Import appropriate validator and add check.
+    id = auto_field(dump_only=True) # Import appropriate validator and add check.
     username = auto_field(required=True, validate=validate.Length(min=1))
     # This type of field will get its value based on a function
     password = fields.Method(
@@ -26,12 +27,20 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
         )
     
     def load_password(self, password):
-        if len(password) >= 6:
-            return generate_password_hash(password, method='sha256')
-        raise exceptions.ValidationError(
-            "Password must be at least 6 characters"
-            )
 
+        #validator = validate.Regexp("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?/~_+-=|\]).{8,32}$")
+        numval = validate.Regexp("(?=.*[0-9])", error="Password must contain a number.")    
+        lcval = validate.Regexp("(?=.*[a-z])", error="Password must contain lowercase letter.")    
+        upval = validate.Regexp("(?=.*[A-Z])", error="Password must contain uppercase letter.")    
+        lenval = validate.Regexp(".{6,32}", error="Password length must be between 6 and 32 characters.")
+
+        validator = validate.And(numval,lcval,upval,lenval)
+
+        if validator(password):
+            return generate_password_hash(password, method='sha256')
+        raise ValidationError
+        
+        
     # Metadata for the class
     class Meta:
         # This schema applies to the 'Users' model
