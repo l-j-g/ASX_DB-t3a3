@@ -4,6 +4,7 @@ from main import db
 from models.tickers import Tickers
 from models.users import Users
 from schemas.ticker_schema import tickers_schema, ticker_schema
+from schemas.info_schema import info_schema
 from schemas.user_schema import users_schema, user_schema
 import locale
 from sqlalchemy import desc, func
@@ -25,6 +26,7 @@ def get_tickers():
         "sector": "Category",
         "marketcap": "Market Capitalization"
     }
+    print(data['tickers'])
     for ticker in data['tickers']:
        ticker['marketcap'] = locale.currency(ticker['marketcap'], grouping=True)
     return render_template("ticker_index.html", page_data=data, headers=headers)
@@ -53,10 +55,26 @@ def sort_tickers(order, group):
 def get_info(ticker_id):
     ticker = Tickers.query.get_or_404(ticker_id)
     data = {
-    "page_title": "Ticker Info",
+    "page_title": "Company Infomation",
     "ticker": ticker_schema.dump(ticker),
     "followers": db.session.query(Users).with_parent(ticker).count()
     }
+    headers = {
+        "ticker_id":  "ASX Ticker:",
+        "zipcode": "Postcode:",
+        "sector": "Sector:", 
+        "longBusinessSummary": "Summary:"  
+        "city": "City:"
+        "phone": "Phone Number:" 
+        "state": "State:" 
+        "compensationAsOfEpochDate":  
+        "country": 
+        "website":
+        "maxAge":  
+        "address":  
+        "industry": 
+    } 
+    print(data["ticker"]["info"])
 
 
     return render_template("ticker_info.html", page_data=data)

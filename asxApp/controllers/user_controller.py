@@ -41,12 +41,14 @@ def register():
 
     if request.method == "POST":
         # Create a user, log them in, redirect to user index
+        #try:
         new_user = user_schema.load(request.form)
         db.session.add(new_user)
         db.session.commit()
         login_user(new_user)
-        return redirect(url_for("users.get_users"))
-
+        return redirect(url_for("users.get_users"))   
+        #   except ValidationError as err:
+        #    abort(422, {err})
 
 @users.route("/users/login/", methods=["GET", "POST"])
 def log_in():

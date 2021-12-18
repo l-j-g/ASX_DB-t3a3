@@ -18,9 +18,10 @@ class Tickers(db.Model):
     sector = db.Column(db.String(200))
     marketcap = db.Column(db.Integer)
 
-# one-to-one relationship for tickers to their info 
+    # one-to-one relationship for tickers to their info 
+    info = db.relationship("Info", back_populates='tickers', uselist=False)
     
-    # The many-to-many relationship is being expressed through the association table called enrolments. 
+    # The many-to-many relationship is being expressed through the association table called portfolios. 
     followers = db.relationship(
         Users,
         secondary=portfolios,
@@ -34,29 +35,30 @@ class Tickers(db.Model):
         self.company_name = company_name
         self.sector = sector
         self.marketcap = marketcap
-#        self.info = 1
-#        self.info = info
+
 class Info(db.Model):
     __tablename__ = "info"
-    ticker_id = db.Column(db.string(45), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    ticker_id = db.Column(db.String(45), ForeignKey('tickers.ticker_id'), unique=True)
+    zipcode =  db.Column(db.String(45))
+    sector = db.Column(db.String(500))
+    longBusinessSummary = db.Column(db.String(1000))
+    city = db.Column(db.String(500))
+    phone = db.Column(db.String(500))
+    state = db.Column(db.String(500))
+    compensationAsOfEpochDate = db.Column(db.String(500))
+    country = db.Column(db.String(500))
+    website = db.Column(db.String(500))
+    maxAge = db.Column(db.String(500))
+    address = db.Column(db.String(500))
+    industry = db.Column(db.String(500))
 
-    zip =  db.Column(db.Integer)
-    sector = db.Column(db.String(100))
-    longBusinessSummary = db.Column(db.String(100))
-    city = db.Column(db.String(100))
-    phone = db.Column(db.String(100))
-    state = db.Column(db.String(100))
-    compensationAsOfEpochDate = db.Column(db.String(100))
-    country = db.Column(db.String(100))
-    website = db.Column(db.String(100))
-    maxAge = db.Column(db.String(100))
-    address1 = db.Column(db.String(100))
-    fax = db.Column(db.String(100))
-    industry = db.Column(db.String(100))
-    address2 = db.Column(db.String(100))
+    # many-to-one side of info - ticker relationship
+    
+    tickers = db.relationship('Tickers', back_populates='info')
 
     def __init__(self, values):
-        self.zip =  values[0]
+        self.zipcode = values[0]
         self.sector = values[1]
         self.longBusinessSummary = values[2]
         self.city = values[3]
@@ -66,20 +68,6 @@ class Info(db.Model):
         self.country = values[7]
         self.website = values[8]
         self.maxAge = values[9]
-        self.address1 = values[10]
-        self.fax = values[11]
-        self.industry = values[12]
-        self.address2 = values[13]
-'''
-class Cashflow(db.Model):
-    __tablename__ = "cashflow"
-    id = db.Column(db.Integer, primary_key=True)
-    ticker_id = db.Column(db.String(45), ForeignKey('tickers.ticker_id'))
-    ticker = db.relationship("tickers", back_populates="child")
-
-    def __init__(self):
-       pass 
-        for arg in kwargs.values:
-            self.kwargs = self.arg
-'''
+        self.address = values[10]
+        self.industry = values[11]
 
