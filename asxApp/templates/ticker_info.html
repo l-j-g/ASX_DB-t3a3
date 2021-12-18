@@ -2,27 +2,26 @@
 {% block content %}
 <h2> {{ page_data.page_title }}: {{ page_data['ticker']['company_name']}} </h2>
 <hr/>
-<p>
-    This is some information and contact details about {{ page_data['ticker']['company_name']}}. Below is a list of users who are currently following this company 
-</p>
+<h4> Company Summary: </h4>
 
-<h4> Company Information: </h4>
+{{page_data['ticker']['info']['longBusinessSummary']}}
+<br/>
+
     <table class="table table-striped table-bordered">
         <thead>
             <tr>    
-                Subject:
+                <th>Key:</th>
+                <th>Value:</th>
             </tr>
-
-            <tr>    
-                Value:
-            </tr>
-
         </thead>
+        {% for key in headers.keys() %}
         <tbody>
-        {% for user in page_data['ticker']['followers'] %}
             <tr>
                 <td>
-                    <a href="/users/{{ user.id }}/">{{ user.username}} </a>
+                   {{ headers[key] }} 
+                </td>
+                <td>
+                   {{ page_data['ticker']['info'][key] }} 
                 </td>
             </tr>
         {% endfor %}

@@ -57,7 +57,8 @@ class Info(db.Model):
     
     tickers = db.relationship('Tickers', back_populates='info')
 
-    def __init__(self, values):
+    def __init__(self, values, ticker_id):
+        self.ticker_id = ticker_id
         self.zipcode = values[0]
         self.sector = values[1]
         self.longBusinessSummary = values[2]

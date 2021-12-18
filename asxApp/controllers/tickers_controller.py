@@ -61,23 +61,21 @@ def get_info(ticker_id):
     }
     headers = {
         "ticker_id":  "ASX Ticker:",
-        "zipcode": "Postcode:",
         "sector": "Sector:", 
-        "longBusinessSummary": "Summary:"  
-        "city": "City:"
-        "phone": "Phone Number:" 
-        "state": "State:" 
-        "compensationAsOfEpochDate":  
-        "country": 
-        "website":
-        "maxAge":  
-        "address":  
-        "industry": 
+        "industry": "Industry:",
+        "website": "Website:",
+        "address": "Address:",  
+        "city": "City:",
+        "state": "State:",
+        "phone": "Phone Number:",
+        "zipcode": "Postcode:",
+        "country": "Country:",
     } 
-    print(data["ticker"]["info"])
+    print(data["ticker"]["info"].values())
+    print(headers.values())
 
 
-    return render_template("ticker_info.html", page_data=data)
+    return render_template("ticker_info.html", page_data=data, headers=headers)
 
 
 @tickers.route("/tickers/<string:ticker_id>/add", methods=["GET"])
