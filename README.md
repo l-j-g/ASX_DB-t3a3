@@ -117,3 +117,7 @@ Example of legal obligations
 Add more tickers
 Add pagination
 Add info 1-1 relation
+Add password validation
+Finish readme
+Fix images
+
