@@ -26,15 +26,8 @@ def drop_db():
 @db_commands.cli.command("seed")
 def seed_db():
 	""" Seeds the database with user data"""
-	from models.users import Users
 	from models.tickers import Tickers, Info
 	from models.usage import Usage
-#    from faker import Faker
-#    faker = Faker()
-#
-#    for i in range(20):
-#        user = Users(faker.catch_phrase())
-#        db.session.add(user)
 	with open('./asxApp/data/ASX_Listed_Companies_04-11-2021_04-29-57_AEDT.csv') as csvfile:
 		reader = csv.reader(csvfile, delimiter=',')
 		header = next(reader)
@@ -75,17 +68,30 @@ def reset_db():
 
 
 	# Seed
-	from models.tickers import Tickers
+	from models.tickers import Tickers, Info
 	from models.usage import Usage
-	print("Tables reset & seeded!")
 	with open('./asxApp/data/ASX_Listed_Companies_04-11-2021_04-29-57_AEDT.csv') as csvfile:
 		reader = csv.reader(csvfile, delimiter=',')
 		header = next(reader)
-		for i in range(3):
+		for i in range(10):
 			csv_line = next(reader)
 			ticker_id = csv_line[0]
+			if csv_line[4] == 'N/A':
+				csv_line[4] = 0
 			ticker = Tickers(csv_line[0],csv_line[1],csv_line[3],csv_line[4])
 			db.session.add(ticker)
+			with open(f'./asxApp/data/{ticker_id}.AX/{ticker_id}.AX_info.csv') as info:
+				reader2 = csv.reader(info, delimiter=',')
+				header = next(reader2)
+				titles = []
+				values = []
+				for line in reader2:
+					if line[0] == 'fax' or line[0] == 'address2':
+						continue
+					titles.append(line[0])
+					values.append(line[1])
+				info = Info(values,ticker_id)
+				db.session.add(info)
 	db.session.add(Usage())
 	db.session.commit()
 	print("Tables seeded!")
