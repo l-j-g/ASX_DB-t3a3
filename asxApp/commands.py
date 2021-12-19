@@ -98,4 +98,5 @@ def export_db():
 	password = os.environ.get('DB_PASS') 
 	database = os.environ.get('DB_NAME') 
 	domain = os.environ.get('DB_DOMAIN')
-	os.system(f"pg_dump --dbname=postgresql://{user}:{password}@{domain}/{database} -f dump")  
+	os.system(f"pg_dump --dbname=postgresql://{user}:{password}@{domain}/{database} -f dump.txt")  
+	print("Data backed up to dump.txt")
