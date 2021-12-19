@@ -22,7 +22,9 @@ class Config(object):
             if uri_dict[key] is None:
                 raise ValueError(f"{key} is not set.")
         return f"postgresql+psycopg2://{uri_dict['DB_USER']}:{uri_dict['DB_PASS']}@{uri_dict['DB_DOMAIN']}/{uri_dict['DB_NAME']}"
-    
+
+# Turn off AWS because local storage is adequate
+'''
     # Get AWS credentials from .env file
     @property
     def AWS_ACCESS_KEY_ID(self):
@@ -44,6 +46,7 @@ class Config(object):
         if not value:
             raise ValueError("AWS_S3_BUCKET is not set")
         return value
+'''
 
 class DevelopmentConfig(Config):
     DEBUG = True
