@@ -138,10 +138,17 @@ SQL constraints: string, unique, not null, length < 200.
 
 Passwords are validated to ensure that they conform to the following policy:
 
-- at least 6 characters, less then 200 characters.
+- at least 6 characters, less then 32 characters.
 - 1 upper case letter
 - 1 lower case letter
 - 1 digit
+
+These conditions are validated using the following regex expressions
+
+"(?=.*[0-9])" : contains at least one number
+"(?=.*[a-z])" : contains at least one lower case 
+"(?=.*[A-Z])" : contains at least one upper case 
+".{6,32}"     : length > 6, length < 32
 
 ### Usernames
 
@@ -166,7 +173,7 @@ Usernames are validated to ensure that they contain at least 6 characters.
 - At least 3 queries that involve the selecting, filtering, grouping and ordering of data:
     1. On the ticker index page each heading in the title can be clicked to sort the data by that category in either ascending or descending order. (8 queries)
     2. If the user is logged in, on the ticker index page, the function to add or remove companies from the users portfolio (based on if the company is already in the users portfolio) is provided via queries to the database.
-    3. On a ticker info pa
+    3. On a ticker info page a query is made to the portfolios table to find the username of all users who have added the ticker to their portfolio.
 - At least two join statements:
     1. info: ticker information is joined to ticker table via one-to-one relationship
     2. followers: tickers table is joined to users as 'followers' which lists what users have added the that company to their portfolio
