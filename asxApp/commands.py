@@ -61,11 +61,11 @@ def reset_db():
 	# Drop tables
 	db.drop_all()
 	db.engine.execute("DROP TABLE IF EXISTS alembic_version;")
-	db.engine.execute("DROP TABLE IF EXISTS alembic_version CASCADE;")
-
+	print("Tables dropped!")
 	# Create
 	db.create_all()
 
+	print("Tables created!")
 
 	# Seed
 	from models.tickers import Tickers, Info
