@@ -1,0 +1,366 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 13.4
+-- Dumped by pg_dump version 13.4
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: info; Type: TABLE; Schema: public; Owner: sideappuser
+--
+
+CREATE TABLE public.info (
+    id integer NOT NULL,
+    ticker_id character varying(45),
+    zipcode character varying(45),
+    sector character varying(500),
+    "longBusinessSummary" character varying(1000),
+    city character varying(500),
+    phone character varying(500),
+    state character varying(500),
+    "compensationAsOfEpochDate" character varying(500),
+    country character varying(500),
+    website character varying(500),
+    "maxAge" character varying(500),
+    address character varying(500),
+    industry character varying(500)
+);
+
+
+ALTER TABLE public.info OWNER TO sideappuser;
+
+--
+-- Name: info_id_seq; Type: SEQUENCE; Schema: public; Owner: sideappuser
+--
+
+CREATE SEQUENCE public.info_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.info_id_seq OWNER TO sideappuser;
+
+--
+-- Name: info_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: sideappuser
+--
+
+ALTER SEQUENCE public.info_id_seq OWNED BY public.info.id;
+
+
+--
+-- Name: portfolios; Type: TABLE; Schema: public; Owner: sideappuser
+--
+
+CREATE TABLE public.portfolios (
+    user_id integer NOT NULL,
+    ticker_id character varying(45) NOT NULL
+);
+
+
+ALTER TABLE public.portfolios OWNER TO sideappuser;
+
+--
+-- Name: tickers; Type: TABLE; Schema: public; Owner: sideappuser
+--
+
+CREATE TABLE public.tickers (
+    ticker_id character varying(45) NOT NULL,
+    company_name character varying(45) NOT NULL,
+    sector character varying(200),
+    marketcap integer
+);
+
+
+ALTER TABLE public.tickers OWNER TO sideappuser;
+
+--
+-- Name: usage; Type: TABLE; Schema: public; Owner: sideappuser
+--
+
+CREATE TABLE public.usage (
+    instance_id integer NOT NULL,
+    no_logins integer
+);
+
+
+ALTER TABLE public.usage OWNER TO sideappuser;
+
+--
+-- Name: usage_instance_id_seq; Type: SEQUENCE; Schema: public; Owner: sideappuser
+--
+
+CREATE SEQUENCE public.usage_instance_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.usage_instance_id_seq OWNER TO sideappuser;
+
+--
+-- Name: usage_instance_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: sideappuser
+--
+
+ALTER SEQUENCE public.usage_instance_id_seq OWNED BY public.usage.instance_id;
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: sideappuser
+--
+
+CREATE TABLE public.users (
+    id integer NOT NULL,
+    username character varying(100) NOT NULL,
+    password character varying(200) NOT NULL
+);
+
+
+ALTER TABLE public.users OWNER TO sideappuser;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: sideappuser
+--
+
+CREATE SEQUENCE public.users_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_id_seq OWNER TO sideappuser;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: sideappuser
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- Name: info id; Type: DEFAULT; Schema: public; Owner: sideappuser
+--
+
+ALTER TABLE ONLY public.info ALTER COLUMN id SET DEFAULT nextval('public.info_id_seq'::regclass);
+
+
+--
+-- Name: usage instance_id; Type: DEFAULT; Schema: public; Owner: sideappuser
+--
+
+ALTER TABLE ONLY public.usage ALTER COLUMN instance_id SET DEFAULT nextval('public.usage_instance_id_seq'::regclass);
+
+
+--
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: sideappuser
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Data for Name: info; Type: TABLE DATA; Schema: public; Owner: sideappuser
+--
+
+COPY public.info (id, ticker_id, zipcode, sector, "longBusinessSummary", city, phone, state, "compensationAsOfEpochDate", country, website, "maxAge", address, industry) FROM stdin;
+1	14D	5039	Utilities	1414 Degrees Limited offers silicon-based thermal energy storage systems for networks and industries in Australia. It provides heat and electricity from renewable energy sources. The company was formerly known as Latent Heat Storage Pty Ltd and changed its name to 1414 Degrees Limited in December 2016. 1414 Degrees Limited was incorporated in 2009 and is based in Melrose Park, Australia.	Melrose Park	61 8 8357 8273	SA	1640908800	Australia	https://1414degrees.com.au	86400	136 Daws Road	Utilities—Independent Power Producers
+2	1AD	3083	Healthcare	AdAlta Limited, a clinical stage biotechnology company, discovers and develops protein therapeutics in Australia. The company's lead i-body drug candidate includes AD-214, which is in Phase I clinical trials for the treatment of idiopathic pulmonary fibrosis and other fibrotic diseases. It has collaborative partnerships with GE Healthcare to discover i-bodies that bind to granzyme B; and Carina Biotech Pty Ltd. to develop CAR-T cell products against various solid tumor antigens. AdAlta Limited was incorporated in 2006 and is based in Bundoora, Australia.	Bundoora	61 3 9479 5159	VIC	1640908800	Australia	https://www.adalta.com.au	86400	2 Park Drive	Biotechnology
+3	1AG	6007	Financial Services	Alterra Limited engages in the origination, development, and management of agricultural land and water assets in Australia. Its flagship project is the Carpenters project, which covers an area of approximately 300 hectares of avocado development located in Pemberton, Western Australia. The company was formerly known as Carbon Conscious Limited and changed its name to Alterra Limited in March 2016. Alterra Limited was incorporated in 2008 and is based in West Leederville, Australia.	West Leederville	61 8 9204 8400	WA	1609372800	Australia	https://alterra.com.au	86400	144 Northwood Street	Asset Management
+4	1ST	2010	Healthcare	1st Group Limited provides healthcare and corporate online search and appointment booking services in Australia. It operates MyHealth1st.com.au, a digital health services marketplace; PetYeti, an online pet service marketplace; and GoBookings.com, a corporate and government solutions platform. It serves pharmacies; private practices, such as doctors, dentists, optometrists, allied services, specialists, and natural therapists; vets; hospitals; and corporate and government agencies. The company was formerly known as 1st Available Ltd and changed its name to 1ST Group Limited in December 2016. 1ST Group Limited was incorporated in 2009 and is based in Surry Hills, Australia.	Surry Hills	1300 266 517	NSW	1640908800	Australia	https://www.1stgrp.com	86400	1-9 Buckingham Street	Health Information Services
+5	1VG	6000	Basic Materials	Victory Goldfields Limited engages in the exploration and development of gold projects in Australia. The company holds interest in the Cue goldfields comprising 46 tenements with an area of approximately 7,520 hectares located in Western Australia. The company was formerly known as Hughes Drilling Limited and changed its name to Victory Goldfields Limited in July 2021. Victory Goldfields Limited was incorporated in 2007 and is based in Perth, Australia.	Perth	61 8 6557 8656	WA	1451520000	Australia	https://www.victorygoldfields.com.au	86400	108 St Georges Terrace	Gold
+6	29M	3000	Basic Materials	1130	29Metals Limited explores, develops, and produces copper focused base and precious metals. The company explores copper, zinc, gold, and silver deposits. It holds interest in the Golden Grove property located in Western Australia; and Capricorn Copper property located in Queensland. The company was incorporated in 2021 and is headquartered in Melbourne, Australia.	Melbourne	61 3 7037 5300	VIC	Australia	https://www.29metals.com	86400	150 Collins Street	Other Precious Metals & Mining
+7	2BE	2021	Industrials	Tubi Limited, together with its subsidiaries, manufactures and sells high density polyethylene (HDPE) pipes in Australia, the United States, and New Zealand. Its products include mobile modular extrusions, HDPEs, large bore reeling, stringing, HDPE 40bars, and corrugated pipes. The company's products are used in irrigation, mining, shale gas and LNG, water infrastructure, pipe relining, and power sectors. Tubi Limited was founded in 1972 and is based in Paddington, Australia.	Paddington	61 2 9331 8725	NSW	1609372800	Australia	https://www.tubigroup.com	86400	2 Hopetoun Street	Specialty Industrial Machinery
+8	360	94107	Technology	Life360, Inc. develops and delivers a mobile application in the United States and internationally. It offers Life360 mobile application for families that provides communications, driving safety, and location sharing. The company was formerly known as LReady, Inc. and changed its name to Life360, Inc. in October 2011. Life360, Inc. was incorporated in 2007 and is headquartered in San Francisco, California.	San Francisco	209 581 1772	CA	1609372800	United States	https://www.life360.com	86400	539 Bryant Street	Software—Application
+9	3DA	3168	Industrials	Amaero International Ltd engages in the research, development, manufacture, and sale of laser-based metal additive products in Australia. It also provides research and development, contract manufacturing, tooling specialists, equipment sales and consumables, and training and maintenance services, as well as patented metal alloys. It serves the aviation defense and space sectors, as well as the tool and die industries. The company was founded in 2013 and is headquartered in Notting Hill, Australia.	Notting Hill	61 3 9905 9847	VIC	1640908800	Australia	https://www.amaero.com.au	86400	13 Normanby Road	Specialty Industrial Machinery
+10	3DP	6008	Technology	Pointerra Limited provides a cloud-based solution for managing, visualizing, working in, analyzing, and sharing 3D datasets in the Australasian and North American regions. Its solution supports digital asset management activities in various sectors, including civil infrastructure, mining, oil and gas, architecture, and engineering and construction, as well as for government agencies. Pointerra Limited is based in Subiaco, Australia.	Subiaco	61 8 6323 6100	WA	1640908800	Australia	https://www.pointerra.com	86400	27 Railway Road	Software—Application
+\.
+
+
+--
+-- Data for Name: portfolios; Type: TABLE DATA; Schema: public; Owner: sideappuser
+--
+
+COPY public.portfolios (user_id, ticker_id) FROM stdin;
+5	1VG
+5	1ST
+5	2BE
+5	360
+\.
+
+
+--
+-- Data for Name: tickers; Type: TABLE DATA; Schema: public; Owner: sideappuser
+--
+
+COPY public.tickers (ticker_id, company_name, sector, marketcap) FROM stdin;
+14D	1414 DEGREES LIMITED	Capital Goods	28078464
+1AD	ADALTA LIMITED	Pharmaceuticals, Biotechnology & Life Sciences	21330623
+1AG	ALTERRA LIMITED	Food, Beverage & Tobacco	8333288
+1ST	1ST GROUP LIMITED	Health Care Equipment & Services	8060415
+1VG	VICTORY GOLDFIELDS LIMITED	Materials	9642058
+29M	29METALS LIMITED	Materials	1297228500
+2BE	TUBI LIMITED	Energy	0
+360	LIFE360 INC.	Software & Services	1801972854
+3DA	AMAERO INTERNATIONAL LTD	Capital Goods	77059533
+3DP	POINTERRA LIMITED	Software & Services	277900544
+\.
+
+
+--
+-- Data for Name: usage; Type: TABLE DATA; Schema: public; Owner: sideappuser
+--
+
+COPY public.usage (instance_id, no_logins) FROM stdin;
+1	5
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: sideappuser
+--
+
+COPY public.users (id, username, password) FROM stdin;
+1	daogfxx	sha256$z0rniQQr$20dbff969366f2a6586db71992172de181d48d3a1fe9498216fd08ef48494378
+2	skskjffwww	sha256$OIwJIEK6$76e9aac8b875da01d5a8e384c660290f1391fa96295c425789c76c845c8616d6
+3	dskjasldj	sha256$aLH6Pbcq$077a58b481196de7d51856fba2c34a3bfb5894084df6329a3bb3d5bf4447dd43
+5	laclhan	sha256$KBeIRGZh$00638b7860757660281182f686a2df24b7c03da3a69b6351d3a9cd5726c9aa19
+\.
+
+
+--
+-- Name: info_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sideappuser
+--
+
+SELECT pg_catalog.setval('public.info_id_seq', 10, true);
+
+
+--
+-- Name: usage_instance_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sideappuser
+--
+
+SELECT pg_catalog.setval('public.usage_instance_id_seq', 1, false);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sideappuser
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 5, true);
+
+
+--
+-- Name: info info_pkey; Type: CONSTRAINT; Schema: public; Owner: sideappuser
+--
+
+ALTER TABLE ONLY public.info
+    ADD CONSTRAINT info_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: info info_ticker_id_key; Type: CONSTRAINT; Schema: public; Owner: sideappuser
+--
+
+ALTER TABLE ONLY public.info
+    ADD CONSTRAINT info_ticker_id_key UNIQUE (ticker_id);
+
+
+--
+-- Name: portfolios portfolios_pkey; Type: CONSTRAINT; Schema: public; Owner: sideappuser
+--
+
+ALTER TABLE ONLY public.portfolios
+    ADD CONSTRAINT portfolios_pkey PRIMARY KEY (user_id, ticker_id);
+
+
+--
+-- Name: tickers tickers_company_name_key; Type: CONSTRAINT; Schema: public; Owner: sideappuser
+--
+
+ALTER TABLE ONLY public.tickers
+    ADD CONSTRAINT tickers_company_name_key UNIQUE (company_name);
+
+
+--
+-- Name: tickers tickers_pkey; Type: CONSTRAINT; Schema: public; Owner: sideappuser
+--
+
+ALTER TABLE ONLY public.tickers
+    ADD CONSTRAINT tickers_pkey PRIMARY KEY (ticker_id);
+
+
+--
+-- Name: usage usage_pkey; Type: CONSTRAINT; Schema: public; Owner: sideappuser
+--
+
+ALTER TABLE ONLY public.usage
+    ADD CONSTRAINT usage_pkey PRIMARY KEY (instance_id);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: sideappuser
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users users_username_key; Type: CONSTRAINT; Schema: public; Owner: sideappuser
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_username_key UNIQUE (username);
+
+
+--
+-- Name: info info_ticker_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sideappuser
+--
+
+ALTER TABLE ONLY public.info
+    ADD CONSTRAINT info_ticker_id_fkey FOREIGN KEY (ticker_id) REFERENCES public.tickers(ticker_id);
+
+
+--
+-- Name: portfolios portfolios_ticker_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sideappuser
+--
+
+ALTER TABLE ONLY public.portfolios
+    ADD CONSTRAINT portfolios_ticker_id_fkey FOREIGN KEY (ticker_id) REFERENCES public.tickers(ticker_id);
+
+
+--
+-- Name: portfolios portfolios_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sideappuser
+--
+
+ALTER TABLE ONLY public.portfolios
+    ADD CONSTRAINT portfolios_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
