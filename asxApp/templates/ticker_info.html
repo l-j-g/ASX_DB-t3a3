@@ -5,7 +5,7 @@
 <h4> Company Summary: </h4>
 
 {{page_data['ticker']['info']['longBusinessSummary']}}
-<br/>
+<br/> <br/>
 
     <table class="table table-striped table-bordered">
         <thead>
@@ -27,7 +27,9 @@
         {% endfor %}
     </table>
 
-
+    <p>
+        Below is the number of users who have added this company to their portfolio and links to their profile.
+    </p>
     <div>
         <h4> Total Followers: {{ page_data['followers']  }} </h4>
     </div>

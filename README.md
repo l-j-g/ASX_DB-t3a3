@@ -145,13 +145,33 @@ Passwords are validated to ensure that they conform to the following policy:
 
 ### Usernames
 
-SQL constraints: string, not null, length < 200.
+SQL constraints: string, not null, length < 200, unique.
 
 Usernames are validated to ensure that they contain at least 6 characters.
 
 ## Features
 
-# TODO
+- A functioning application layer which runs with minimal errors
+- Models which define both required and nullable fields: e.g. all models have primary keys (required), tickers model has fields (e.g. marketcap which are nullable)
+- Full CRUD functionality:  Users can create accounts, update their details and delete their accounts.
+- Display in templated HTML of tabular & listed data retrieved from databases on the user index, ticker index and ticker info pages.
+- At least one query which performs aggregation: On a tickers info page the aggregate number of users that have added that company to their portfolio is displayed as "Total Followers"
+- Validation of Username and Password fields, as described above
+- 5 Database tables:
+    1. users: stores users account details
+    2. tickers: stores basic information about ASX listed companies
+    3. info: one-to-one relation stores detailed information about a ASX listed company
+    4. portfolios: many to many linkage table between users and tickers which stores which companies users have added to their portfolio.
+    5. usage: stores information about usage of the site (i.e how many logins have been recorded.) - This information is displayed on the homepage.
+- At least 3 queries that involve the selecting, filtering, grouping and ordering of data:
+    1. On the ticker index page each heading in the title can be clicked to sort the data by that category in either ascending or descending order. (8 queries)
+    2. If the user is logged in, on the ticker index page, the function to add or remove companies from the users portfolio (based on if the company is already in the users portfolio) is provided via queries to the database.
+    3. On a ticker info pa
+- At least two join statements:
+    1. info: ticker information is joined to ticker table via one-to-one relationship
+    2. followers: tickers table is joined to users as 'followers' which lists what users have added the that company to their portfolio
+- A custom terminal command to output all data in the database to a .txt table: if the installation steps about have been followed, typing `flask db-custom export` will execute a postgresql `pg_dump` that will generate a text file that contains a series of SQL commands can be used to restore the database. 
+
 
 ## Security
 
@@ -185,7 +205,7 @@ __Ethical__
 
 An ethical obligation of this website is to protect users personal information such as their passwords - if this password was not properly secured a malicious actor could use these credentials to potentially access.
 
-The information provided on this site will also, to the best of its ability provide factually correct and accurate information. To address this, the ticker information that is displayed on this site has been sourced from Yahoo Finance services, utilising the yahoo_fin Python package. The script to prepare this data for import into this application is available here: https://github.com/l-j-g/asxData
+The information provided on this site will also, to the best of its ability provide factually correct and accurate information. To address this, the ticker information that is displayed on this site has been sourced from Yahoo Finance services, utilising the yahoo_fin Python package. The script to prepare this data for import is available here: https://github.com/l-j-g/asxData
 
 __Legal__
 
@@ -193,6 +213,11 @@ In Australia it is a requirement under the Financial Services Reform Act 2001 to
 
 The website not be taken as constituting professional advice from the website owner. I am not not liable for any loss caused, whether due to negligence or otherwise arising from the use of, or reliance on, the information provided directly or indirectly, by use of this website.
 
+### Extension
 
-
-
+Features I was unable to include due to time constraints include: 
+- conditionally filter stocks, i.e marketcap > x <  y or all stocks that start with letter x.
+- additional company information e.g. cashflow statements, income statements ect.
+- user interface and error handling, e.g. - failed validation and integrity check are currently not handled very gracefully e.g. returning raw json.
+- testing
+- better commenting and documentation
