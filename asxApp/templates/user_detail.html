@@ -2,7 +2,12 @@
 {% block content %}
     <h2> {{ page_data.page_title }}: {{ page_data.user.username }} </h2>
     <p>This is {{page_data.user.username}}'s profile - where you can view their public details and portfolio. </p>
-    <img src= "../../static/user_images/{{ page_data.user.id }}.png" style="width: 250px">
+    <hr/>
+    {% if page_data['image'] == True %}
+        <img src= "../../static/user_images/{{ page_data.user.id }}.png" style="width: 250px">
+    {% else %}
+        This user has not uploaded a profile picture yet.
+    {% endif %}
     <br/><br/> 
     <ul>
         <li>User Name: {{ page_data.user.username }}</li>

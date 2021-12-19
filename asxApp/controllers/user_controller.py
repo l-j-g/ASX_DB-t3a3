@@ -3,12 +3,10 @@ from main import db, lm
 from models.users import Users
 from models.usage import Usage
 from schemas.user_schema import users_schema, user_schema, user_update_schema
-from schemas.usage_schema import usage_schema
 from flask_login import login_user, logout_user, login_required, current_user
 from marshmallow import ValidationError
-from sqlalchemy import update
-import boto3
-from models.tickers import Tickers
+import os
+#import boto3
 
 @lm.user_loader
 def load_user(username):
@@ -31,18 +29,6 @@ def get_users():
         "users": users_schema.dump(Users.query.all())
     }
 
-
-
-        #user = Users.query.filter_by(id=current_user.id)
-        #updated_fields = user_schema.dump(request.form)
-        ## user_update_schema.validate() - to check for errors, validation checks are 
-        ## only used on load() by default.
-        ## user_update_schema has partial = True set, because we are not updating password.
-        #errors = user_update_schema.validate(updated_fields)
-
-
-        #user.update(updated_fields)
-        #db.session.commit()
 
     return render_template("user_index.html", page_data=data)
 
@@ -109,6 +95,12 @@ def user_detail():
       
         # client object communicates with our bucket
         user = Users.query.get_or_404(current_user.id)
+
+        if os.path.exists(f"asxApp/static/user_images/{current_user.id}.png"):
+            image = True
+        else:
+            image = False
+        '''
         s3_client = boto3.client('s3')    
         # get s3 bucket name from config
         bucket_name = current_app.config["AWS_S3_BUCKET"]
@@ -121,10 +113,11 @@ def user_detail():
                 },
             ExpiresIn=160
             ) 
+        '''
         data = {
             "page_title": "Account Details",
             "user": user_schema.dump(user),
-            "image": image_url
+            "image": image
         }
         return render_template("profile.html", page_data=data)
 
@@ -149,7 +142,8 @@ def user_detail():
 def get_user(id):
     # get this users data from the database
     user = Users.query.get_or_404(id)
-    # client object communicates with our bucket
+    # s3 hosting of images has been disabled because it is complicated for setup
+    '''
     s3_client = boto3.client('s3')    
     # get s3 bucket name from config
     bucket_name = current_app.config["AWS_S3_BUCKET"]
@@ -162,10 +156,17 @@ def get_user(id):
         },
         ExpiresIn=160
     )
+    '''
+    if os.path.exists(f"asxApp/static/user_images/{user.id}.png"):
+        image = True
+    else:
+        image = False
+
     data = {
         "page_title": "User Detail",
         "user": user_schema.dump(user),
-        "image": image_url
+        "image": image
+      #  "image": image_url
     }
     return render_template("user_detail.html", page_data=data)
 
@@ -178,4 +179,4 @@ def delete_user(id):
     user = Users.query.get_or_404(id)
     db.session.delete(user)
     db.session.commit()
-    return redirect(url_for("users.get_users"))
+    return redirect(url_for("users.user_detail"))

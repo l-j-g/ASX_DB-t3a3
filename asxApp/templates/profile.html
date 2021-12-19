@@ -16,7 +16,7 @@
         <button>Log Out</button>
     </form>
 
-    <form action = "/users/profile/delete", method="POST">
+    <form action = "/users/{{ current_user.id }}/delete", method="POST">
         <button>DELETE USER</button>
     </form>
     </div>
@@ -24,11 +24,16 @@
     Turning off AWS hosted profile pictures 
     <img src= "{{ page_data.image }}" style="width: 250px">
 -->
-    <img src= "../../static/user_images/{{ page_data.user.id }}.png" style="width: 250px">
+    <br/>
+    {% if page_data['image'] == True %}
+        <img src= "../../static/user_images/{{ current_user.id }}.png" style="width: 250px">
+    {% else %}
+        You have not uploaded a profile picture yet.
+    {% endif %}
     <br/><br/>
 
-    <h4>Update Image: </h4>
-    <form action="/users/{{ page_data.user.id }}/image/" method="POST" enctype = "multipart/form-data">
+    <h4>Update Profile Picture(.png filetype only): </h4>
+    <form action="/users/{{ current_user.id }}/image/" method="POST" enctype = "multipart/form-data">
         <input type="file" name="image">
         <input type="submit">
     </form>
