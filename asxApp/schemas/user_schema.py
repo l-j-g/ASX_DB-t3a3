@@ -26,7 +26,6 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
     
     def load_password(self, password):
 
-        #validator = validate.Regexp("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?/~_+-=|\]).{8,32}$")
         numval = validate.Regexp("(?=.*[0-9])", error="Password must contain a number.")    
         lcval = validate.Regexp("(?=.*[a-z])", error="Password must contain lowercase letter.")    
         upval = validate.Regexp("(?=.*[A-Z])", error="Password must contain uppercase letter.")    

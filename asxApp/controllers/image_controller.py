@@ -10,13 +10,12 @@ user_images = Blueprint('user_images', __name__)
 @user_images.route("/users/<int:id>/image/", methods=["POST"])
 @login_required
 def update_image(id):
-    print("here")
+    """ Update a users Profile Picture"""
     user = Users.query.get_or_404(id)
     if "image" in request.files:
         image = request.files["image"]
         if Path(image.filename).suffix != ".png":
             return abort(400, description="Invalid file type")
-        dir_path = os.path.dirname(os.path.realpath(__file__))
         image.save(f"asxApp/static/{user.image_filename}")
         '''
         # use boto3 package to upload file to s3 bucket

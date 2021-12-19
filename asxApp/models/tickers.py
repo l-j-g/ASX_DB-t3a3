@@ -11,7 +11,7 @@ portfolios = db.Table(
 )
 
 class Tickers(db.Model):
-
+    """ Stores basic infomation about ASX listed companies"""
     __tablename__ = "tickers"
     ticker_id = db.Column(db.String(45), primary_key=True)
     company_name = db.Column(db.String(45), unique=True, nullable=False)
@@ -37,6 +37,7 @@ class Tickers(db.Model):
         self.marketcap = marketcap
 
 class Info(db.Model):
+    """ Stores additional company infomation"""
     __tablename__ = "info"
     id = db.Column(db.Integer, primary_key=True)
     ticker_id = db.Column(db.String(45), ForeignKey('tickers.ticker_id'), unique=True)

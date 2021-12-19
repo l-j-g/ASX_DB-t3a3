@@ -16,6 +16,7 @@ locale.setlocale( locale.LC_ALL, 'en_US.UTF-8')
 
 @tickers.route("/tickers/", methods=["GET"])
 def get_tickers():
+    """ Get all tickers from database """
     data = {
         "page_title": "Ticker Index",
         "tickers": tickers_schema.dump(Tickers.query.all())
@@ -34,6 +35,7 @@ def get_tickers():
 
 @tickers.route("/tickers/orderway=<string:order>&groupby=<string:group>", methods=["GET"])
 def sort_tickers(order, group):
+    """ Sorts tickers by the group and order given"""
     data = {
         "page_title": "Ticker Index",
         "tickers": tickers_schema.dump(Tickers.query.order_by(getattr(getattr(Tickers,group),order)()).all()),
@@ -52,6 +54,7 @@ def sort_tickers(order, group):
 
 @tickers.route("/tickers/<string:ticker_id>/info", methods=["GET"])
 def get_info(ticker_id):
+    """ Get detailed infomation about ticker """
     ticker = Tickers.query.get_or_404(ticker_id)
     data = {
     "page_title": "Company Infomation",
@@ -78,6 +81,7 @@ def get_info(ticker_id):
 @tickers.route("/tickers/<string:ticker_id>/add", methods=["GET"])
 @login_required
 def add_ticker(ticker_id):
+    """ Add ticker to users portfolio """
     ticker = Tickers.query.get_or_404(ticker_id)
     ticker.followers.append(current_user)
     db.session.commit()
@@ -86,6 +90,7 @@ def add_ticker(ticker_id):
 @tickers.route("/tickers/<string:ticker_id>/remove", methods=["GET"])
 @login_required
 def remove_ticker(ticker_id):
+    """ Remove ticker from users portfolio """
     ticker = Tickers.query.get_or_404(ticker_id)
     ticker.followers.remove(current_user)
     db.session.commit()

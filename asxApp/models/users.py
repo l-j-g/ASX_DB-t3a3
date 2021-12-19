@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class Users(UserMixin, db.Model):
-
+    """ Stores user login credentials """
     __tablename__ = "users"
     id = db.Column(
         db.Integer,
@@ -20,8 +20,6 @@ class Users(UserMixin, db.Model):
         nullable=False
     )
 
-#    tickers_followed = db.relationship("Tickers", backref="parents")
-
     @property
     def image_filename(self):
         return f"user_images/{self.id}.png"
@@ -29,6 +27,7 @@ class Users(UserMixin, db.Model):
     # No init method needed, because we have a schema.
 
     def set_password(self, password):
+        # generates a hash for the password
         self.password = generate_password_hash(password, method='sha256')
 
     def check_password(self, password):

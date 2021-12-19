@@ -103,7 +103,7 @@ Using your web browser navigate to [http://127.0.0.1:5000/home](http://127.0.0.1
 
 The purpose of this application is to demonstrate web application development with create, read, update, delete (CRUD) capabilities. This application includes a full stack development framework that provides a Data, Application and Presentation layer utilising python, flask and postgresql. It has been developed in completion of the requirements of Term 3 Assignment 3 as a part of the Code, Cloud and Cyber course at CoderAcademy.
 
-The application allows users to view information about and follow data for companies that are publicly listed on the Australian Stock Exchange. Users are able to register persistent accounts on the site, add selected companies to their portfolio and view the portfolios of other users on the site. Furthermore, the application demonstrates functionality to preform data aggregation and validation in order to assist in data interpretation and prevent integrity errors.
+The application allows users to view information about and follow data from companies that are publicly listed on the Australian Stock Exchange. Users are able to register persistent accounts on the site, add selected companies to their portfolio and view the portfolios of other users on the site. Furthermore, the application demonstrates functionality to preform data aggregation and validation in order to assist in data interpretation and prevent integrity errors.
 
 ### List of Pages and Functionality:
 
@@ -115,6 +115,29 @@ The application allows users to view information about and follow data for compa
 - **Sign In**: Login and validation of existing users credentials
 - **Tickers Index**: List of companies that are tracked by the database
 - **Ticker Details**: View information about specific companies.
+
+### Features
+
+- A functioning application layer which runs with minimal errors
+- Models which define both required and nullable fields: e.g. all models have primary keys (required), tickers model has fields (e.g. marketcap which are nullable)
+- Full CRUD functionality:  Users can create accounts, update their details and delete their accounts.
+- Display in templated HTML of tabular & listed data retrieved from databases on the user index, ticker index and ticker info pages.
+- At least one query which performs aggregation: On a tickers info page the aggregate number of users that have added that company to their portfolio is displayed as "Total Followers"
+- Validation of Username and Password fields, as described above
+- 5 Database tables:
+    1. users: stores users account details
+    2. tickers: stores basic information about ASX listed companies
+    3. info: one-to-one relation stores detailed information about a ASX listed company
+    4. portfolios: many to many linkage table between users and tickers which stores which companies users have added to their portfolio.
+    5. usage: stores information about usage of the site (i.e how many logins have been recorded.) - This information is displayed on the homepage.
+- At least 3 queries that involve the selecting, filtering, grouping and ordering of data:
+    1. On the ticker index page each heading in the title can be clicked to sort the data by that category in either ascending or descending order. (8 queries)
+    2. If the user is logged in, on the ticker index page, the function to add or remove companies from the users portfolio (based on if the company is already in the users portfolio) is provided via queries to the database.
+    3. On a ticker info page a query is made to the portfolios table to find the username of all users who have added the ticker to their portfolio.
+- At least two join statements:
+    1. info: ticker information is joined to ticker table via one-to-one relationship
+    2. followers: tickers table is joined to users as 'followers' which lists what users have added the that company to their portfolio
+- A custom terminal command to output all data in the database to a .txt table: if the installation steps about have been followed, typing `flask db-custom export` will execute a postgresql `pg_dump` that will generate a text file that contains a series of SQL commands can be used to restore the database. 
 
 ### Entity Relationship Diagram:
 
@@ -128,9 +151,9 @@ __Tables__:
 - Info: Additional information about listed companies. One to one relationship to the ticker table of which the information relates to.
 - Usage: Used to track use of the website, identifies the number of times users have logged into the site.
 
-## Validation of Fields
+### Validation of Fields
 
-This application utilises the `marshmallow` packages to preform validation of input data. Further field integrity is provided by SQL domain, entity and referential constraints that have been implemented at schemas through the `SQLAlchemy` package.
+This application utilises the `marshmallow` package to preform validation of input data. Further field integrity is provided by SQL domain, entity and referential constraints that have been implemented through models in the `SQLAlchemy` package.
 
 ### Passwords
 
@@ -156,31 +179,7 @@ SQL constraints: string, not null, length < 200, unique.
 
 Usernames are validated to ensure that they contain at least 6 characters.
 
-## Features
-
-- A functioning application layer which runs with minimal errors
-- Models which define both required and nullable fields: e.g. all models have primary keys (required), tickers model has fields (e.g. marketcap which are nullable)
-- Full CRUD functionality:  Users can create accounts, update their details and delete their accounts.
-- Display in templated HTML of tabular & listed data retrieved from databases on the user index, ticker index and ticker info pages.
-- At least one query which performs aggregation: On a tickers info page the aggregate number of users that have added that company to their portfolio is displayed as "Total Followers"
-- Validation of Username and Password fields, as described above
-- 5 Database tables:
-    1. users: stores users account details
-    2. tickers: stores basic information about ASX listed companies
-    3. info: one-to-one relation stores detailed information about a ASX listed company
-    4. portfolios: many to many linkage table between users and tickers which stores which companies users have added to their portfolio.
-    5. usage: stores information about usage of the site (i.e how many logins have been recorded.) - This information is displayed on the homepage.
-- At least 3 queries that involve the selecting, filtering, grouping and ordering of data:
-    1. On the ticker index page each heading in the title can be clicked to sort the data by that category in either ascending or descending order. (8 queries)
-    2. If the user is logged in, on the ticker index page, the function to add or remove companies from the users portfolio (based on if the company is already in the users portfolio) is provided via queries to the database.
-    3. On a ticker info page a query is made to the portfolios table to find the username of all users who have added the ticker to their portfolio.
-- At least two join statements:
-    1. info: ticker information is joined to ticker table via one-to-one relationship
-    2. followers: tickers table is joined to users as 'followers' which lists what users have added the that company to their portfolio
-- A custom terminal command to output all data in the database to a .txt table: if the installation steps about have been followed, typing `flask db-custom export` will execute a postgresql `pg_dump` that will generate a text file that contains a series of SQL commands can be used to restore the database. 
-
-
-## Security
+### Security
 
 To provide security of user credentials no passwords will be stored as plaintext in the database. Passwords will instead be stored as a one-way hash which is irreversible to plaintext. With the given hash an attacker would not be able to guess the plain text password, brute forcing is technically possible but the probability of cracking hash within a reasonable time period is extremely low. In case the password database was to be compromised, each password hash will be generated with a different salt to prevent rainbow table type attacks.
 
@@ -204,7 +203,7 @@ However, because this query is only preforming data sorting and grouping and the
 
 __Professional__
 
-The time frame to deliver this project was two weeks (between 5th October 2021 - 19th October 2021.) The project delivers a framework of an application that could easily be scaled up to add many companies and features.
+The time frame to deliver this project was two weeks (between 5th October 2021 - 19th October 2021.) The project delivers a framework of an application that could easily be scaled up to add many companies and features. A sample size of 10 companies will be seeded after executing the custom flask command. Additional data for import has been included in the `data` directory (Up to 100 companies). However, currently direct importation of this data is not possible. Of the data set provided not all files have complete data entries for the required fields and further data sanitation and preparation would be required.
 
 To the best of my ability I have delivered an application that meets the required brief, runs with minimal errors and protects the personal information of users.
 
@@ -218,12 +217,12 @@ __Legal__
 
 In Australia it is a requirement under the Financial Services Reform Act 2001 to be authorised under an Australian financial services (AFS) licence to provide financial product advice. Therefore it is a legal obligation to state that the information on this website is for general information only.
 
-The website not be taken as constituting professional advice from the website owner. I am not not liable for any loss caused, whether due to negligence or otherwise arising from the use of, or reliance on, the information provided directly or indirectly, by use of this website.
+The website must not be taken as constituting professional advice from the website owner. The site owner is not liable for any loss caused, whether due to negligence or otherwise arising from the use of, or reliance on, the information provided directly or indirectly, by use of this website.
 
 ### Extension
 
 Features I was unable to include due to time constraints include: 
-- conditionally filter stocks, i.e marketcap > x <  y or all stocks that start with letter x.
+- conditionally filter stocks on the ticker index page, i.e marketcap > x <  y or all stocks that start with letter x.
 - additional company information e.g. cashflow statements, income statements ect.
 - user interface and error handling, e.g. - failed validation and integrity check are currently not handled very gracefully e.g. returning raw json.
 - testing

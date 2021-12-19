@@ -17,25 +17,22 @@ def load_user(username):
 def unauthorized():
     return redirect('/users/login')
 
-
 users = Blueprint('users', __name__)
-
 
 # Route to list index of all users
 @users.route("/users/", methods=["GET"])
 def get_users():
+    """ Get all users that have registered from database """
     data = {
         "page_title": "User Index",
         "users": users_schema.dump(Users.query.all())
     }
-
-
     return render_template("user_index.html", page_data=data)
-
 
 # Route to register a new user
 @users.route("/users/register/", methods=["GET", "POST"])
 def register():
+    """ Register a new user in the database """
     data = {"page_title": "Register a New User"}
 
     if request.method == "GET":
@@ -44,12 +41,12 @@ def register():
 
     if request.method == "POST":
         # Create a user, log them in, redirect to user index
-        #try:
         new_user = user_schema.load(request.form)
         db.session.add(new_user)
         db.session.commit()
         login_user(new_user)
 
+        # try:
         usage = Usage.query.get(1)
         usage.no_logins += 1
         db.session.commit()
@@ -60,6 +57,7 @@ def register():
 
 @users.route("/users/login/", methods=["GET", "POST"])
 def log_in():
+    """ User login and authentication """
     data = {"page_title": "Log in as an Existing User"}
 
     if request.method == "GET":
@@ -77,7 +75,6 @@ def log_in():
 
     abort(401, "Login unsuccessful. Incorrect Credentials.")
 
-
 # Route to log out
 @users.route("/users/profile/logout", methods=["GET"])
 @login_required
@@ -87,7 +84,7 @@ def log_out():
 
 
 @users.route("/users/profile/", methods=["GET", "POST"])
-# This route is restriced to users that are logged in.
+# This route is restricted to users that are logged in.
 @login_required
 def user_detail():
 
@@ -142,7 +139,7 @@ def user_detail():
 def get_user(id):
     # get this users data from the database
     user = Users.query.get_or_404(id)
-    # s3 hosting of images has been disabled because it is complicated for setup
+    # s3 hosting of images for simple installation
     '''
     s3_client = boto3.client('s3')    
     # get s3 bucket name from config

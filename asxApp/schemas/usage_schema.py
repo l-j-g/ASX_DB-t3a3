@@ -6,7 +6,7 @@ from marshmallow_sqlalchemy import auto_field
 
 
 class UsageSchema(Schema):
-    # dump only, imformed only by the database. 
+    # dump only, informed only by the database. 
     instance_id = fields.Int()
     no_logins = fields.Int()
 
