@@ -1,1 +1,1 @@
-web: sh -c 'cd ./asx_app && flask run --host=0.0.0.0 --port=$(PORT)'
+web: sh -c 'cd ./asxApp && flask run --host=0.0.0.0 --port=$(PORT)'
