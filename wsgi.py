@@ -1,3 +1,3 @@
-from main import create_app
+from asxApp.main import create_app
 
 app = create_app()
