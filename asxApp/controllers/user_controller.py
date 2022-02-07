@@ -80,7 +80,7 @@ def log_in():
 @login_required
 def log_out():
     logout_user()
-    return redirect('/home')
+    return redirect('/')
 
 
 @users.route("/users/profile/", methods=["GET", "POST"])

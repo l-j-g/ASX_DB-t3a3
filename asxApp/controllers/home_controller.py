@@ -6,7 +6,7 @@ from schemas.usage_schema import usage_schema
 home = Blueprint('home', __name__)
 
 
-@home.route('/home')
+@home.route('/')
 def display_homepage():
     data = {
         "page_title": "Home Page",
