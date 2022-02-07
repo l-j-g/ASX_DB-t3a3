@@ -29,7 +29,7 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
         numval = validate.Regexp("(?=.*[0-9])", error="Password must contain a number.")    
         lcval = validate.Regexp("(?=.*[a-z])", error="Password must contain lowercase letter.")    
         upval = validate.Regexp("(?=.*[A-Z])", error="Password must contain uppercase letter.")    
-        lenval = validate.Regexp(".{6,32}", error="Password length must be between 6 and 32 characters.")
+        lenval = validate.Regexp(".{3,32}", error="Password length must be between 6 and 32 characters.")
 
         validator = validate.And(numval,lcval,upval,lenval)
 

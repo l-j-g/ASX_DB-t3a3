@@ -42,9 +42,12 @@ def register():
     if request.method == "POST":
         # Create a user, log them in, redirect to user index
         new_user = user_schema.load(request.form)
-        db.session.add(new_user)
-        db.session.commit()
-        login_user(new_user)
+        try: 
+            db.session.add(new_user)
+            db.session.commit()
+            login_user(new_user)
+        except Exception as err:
+            abort(409, "Registration failed: that username is already taken") 
 
         # try:
         usage = Usage.query.get(1)
