@@ -4,21 +4,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class Users(UserMixin, db.Model):
-    """ Stores user login credentials """
+    """Stores user login credentials"""
+
     __tablename__ = "users"
-    id = db.Column(
-        db.Integer,
-        primary_key=True
-    )
-    username = db.Column(
-        db.String(100),
-        unique=True,
-        nullable=False
-    )
-    password = db.Column(
-        db.String(200),
-        nullable=False
-    )
+    id = db.Column(db.Integer, primary_key=True)
+
+    username = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(200), nullable=False)
 
     @property
     def image_filename(self):
@@ -28,9 +20,10 @@ class Users(UserMixin, db.Model):
 
     def set_password(self, password):
         # generates a hash for the password
-        self.password = generate_password_hash(password, method='sha256')
+        self.password = generate_password_hash(password, method="sha256")
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
-        
+
+
 # hide_parameters
