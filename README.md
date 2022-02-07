@@ -157,7 +157,7 @@ This application utilises the `marshmallow` package to preform validation of inp
 
 ### Passwords
 
-SQL constraints: string, unique, not null, length < 200.
+SQL constraints: string, unique, not null, length < 32.
 
 Passwords are validated to ensure that they conform to the following policy:
 
@@ -175,7 +175,7 @@ These conditions are validated using the following regex expressions
 
 ### Usernames
 
-SQL constraints: string, not null, length < 200, unique.
+SQL constraints: string, not null, length < 32, unique.
 
 Usernames are validated to ensure that they contain at least 6 characters.
 

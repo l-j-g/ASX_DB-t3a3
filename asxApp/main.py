@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from marshmallow.exceptions import ValidationError
@@ -34,6 +34,15 @@ def create_app():
     @app.errorhandler(ValidationError)
     def handle_bad_request(error):
         """Error handling for bad requests"""
-        return (jsonify(error.messages), 400)
+
+        data = {
+            "page_title": "Error",
+            "error_type": "Validation Error",
+            "error_message": error.messages
+        }
+        print(data)
+
+        
+        return render_template('error.html',page_data=data)
 
     return app
